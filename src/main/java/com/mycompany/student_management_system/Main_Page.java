@@ -10,7 +10,8 @@ import java.util.List;
 
 public class Main_Page extends JFrame {
     // Components for student information
-    private JTextField nameField, emailField, courseField, marksField;
+    private JTextField nameField, emailField, marksField;
+private JComboBox<String> courseField;
     private JTable studentsTable;
     private DefaultTableModel tableModel;
     private JLabel statusLabel;
@@ -153,8 +154,17 @@ public class Main_Page extends JFrame {
         formPanel.add(new JLabel("Course:"), gbc);
         
         gbc.gridy = 5;
-        courseField = new JTextField(20);
-        formPanel.add(courseField, gbc);
+        String[] courses = {
+    "Computer Engineering",
+    "Computer Science",
+    "Information Technology",
+    "Civil Engineering",
+    "Mathematics",
+    "Physics"
+};
+
+courseField = new JComboBox<>(courses);
+formPanel.add(courseField, gbc);
         
         // Marks
         gbc.gridy = 6;
@@ -291,22 +301,22 @@ public class Main_Page extends JFrame {
     
     private void initSampleData() {
         // Add sample data
-        students.add(new Student(currentId++, "Jean D Amour Niyonsaba", 
-                                "jean@gmail.com", "Computer Engineering", 97));
-        students.add(new Student(currentId++, "Emelyne", 
-                                "em@gmail.com", "Comp Engineering", 97));
-        students.add(new Student(currentId++, "David", 
-                                "david@gmail.com", "Civil Engineering", 80));
-        students.add(new Student(currentId++, "Moise", 
-                                "moise@gmail.com", "Inform Techn", 78));
-        students.add(new Student(currentId++, "Egide", 
-                                "egide@gmail.com", "Info System", 70));
-        students.add(new Student(currentId++, "Alice", 
-                                "alice@gmail.com", "Computer Science", 85));
-        students.add(new Student(currentId++, "Bob", 
-                                "bob@gmail.com", "Mathematics", 92));
-        students.add(new Student(currentId++, "Charlie", 
-                                "charlie@gmail.com", "Physics", 88));
+//        students.add(new Student(currentId++, "Jean D Amour Niyonsaba", 
+//                                "jean@gmail.com", "Computer Engineering", 97));
+//        students.add(new Student(currentId++, "Emelyne", 
+//                                "em@gmail.com", "Comp Engineering", 97));
+//        students.add(new Student(currentId++, "David", 
+//                                "david@gmail.com", "Civil Engineering", 80));
+//        students.add(new Student(currentId++, "Moise", 
+//                                "moise@gmail.com", "Inform Techn", 78));
+//        students.add(new Student(currentId++, "Egide", 
+//                                "egide@gmail.com", "Info System", 70));
+//        students.add(new Student(currentId++, "Alice", 
+//                                "alice@gmail.com", "Computer Science", 85));
+//        students.add(new Student(currentId++, "Bob", 
+//                                "bob@gmail.com", "Mathematics", 92));
+//        students.add(new Student(currentId++, "Charlie", 
+          //                      "charlie@gmail.com", "Physics", 88));
     }
     
     private void refreshTable() {
@@ -325,17 +335,16 @@ public class Main_Page extends JFrame {
     }
     
     private void clearForm() {
-        nameField.setText("");
-        emailField.setText("");
-        courseField.setText("");
-        marksField.setText("");
-    }
-    
+    nameField.setText("");
+    emailField.setText("");
+    courseField.setSelectedIndex(0);
+    marksField.setText("");
+}
     private void addStudent() {
         try {
             String name = nameField.getText().trim();
             String email = emailField.getText().trim();
-            String course = courseField.getText().trim();
+           String course = courseField.getSelectedItem().toString();
             int marks = Integer.parseInt(marksField.getText().trim());
             
             if (name.isEmpty() || email.isEmpty() || course.isEmpty()) {
@@ -370,7 +379,7 @@ public class Main_Page extends JFrame {
             try {
                 String name = nameField.getText().trim();
                 String email = emailField.getText().trim();
-                String course = courseField.getText().trim();
+               String course = courseField.getSelectedItem().toString();
                 int marks = Integer.parseInt(marksField.getText().trim());
                 
                 if (name.isEmpty() || email.isEmpty() || course.isEmpty()) {
@@ -599,7 +608,7 @@ public class Main_Page extends JFrame {
             int modelRow = studentsTable.convertRowIndexToModel(selectedRow);
             nameField.setText(tableModel.getValueAt(modelRow, 1).toString());
             emailField.setText(tableModel.getValueAt(modelRow, 2).toString());
-            courseField.setText(tableModel.getValueAt(modelRow, 3).toString());
+courseField.setSelectedItem(tableModel.getValueAt(modelRow, 3).toString());
             marksField.setText(tableModel.getValueAt(modelRow, 4).toString());
         }
     }
