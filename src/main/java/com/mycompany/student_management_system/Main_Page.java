@@ -159,8 +159,8 @@ private JComboBox<String> courseField;
     "Computer Science",
     "Information Technology",
     "Civil Engineering",
-    "Mathematics",
-    "Physics"
+    "Mining",
+    "Telecommunication"
 };
 
 courseField = new JComboBox<>(courses);
@@ -266,8 +266,6 @@ formPanel.add(courseField, gbc);
         JButton deleteButton = createStyledButton("Delete", new Color(204, 0, 0));
         JButton searchButton = createStyledButton("Search", new Color(0, 102, 204));
         JButton showAllButton = createStyledButton("Show All", new Color(102, 0, 204));
-        JButton adminButton = createStyledButton("Admin", new Color(102, 51, 153));
-        JButton computerButton = createStyledButton("Computer E...", new Color(0, 153, 153));
         
         // Add action listeners
         addButton.addActionListener(e -> addStudent());
@@ -281,9 +279,7 @@ formPanel.add(courseField, gbc);
         buttonsPanel.add(deleteButton);
         buttonsPanel.add(searchButton);
         buttonsPanel.add(showAllButton);
-        buttonsPanel.add(adminButton);
-        buttonsPanel.add(computerButton);
-        
+       
         bottomPanel.add(optionsPanel, BorderLayout.NORTH);
         bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
         
