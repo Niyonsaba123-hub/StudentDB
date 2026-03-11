@@ -1,669 +1,436 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package com.mycompany.student_management_system;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
+/**
+ *
+ * @author user
+ */
+public class Main_Page extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Main_Page.class.getName());
 
-public class Main_Page extends JFrame {
-    // Components for student information
-    private JTextField nameField, emailField, marksField;
-private JComboBox<String> courseField;
-    private JTable studentsTable;
-    private DefaultTableModel tableModel;
-    private JLabel statusLabel;
-    
-    // For search and filter functionality
-    private TableRowSorter<DefaultTableModel> rowSorter;
-    private List<Student> students = new ArrayList<>();
-    private List<Student> filteredStudents = new ArrayList<>();
-    private boolean isFiltered = false;
-    private int currentId = 1;
-    
+    /**
+     * Creates new form Main_Page
+     */
     public Main_Page() {
-        setTitle("Student Management System");
-        setSize(1200, 700);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        
-        // Initialize sample data
-        initSampleData();
-        
-        // Create menu bar
-        setupMenuBar();
-        
-        // Create main panel with BorderLayout
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
-        // Top panel with welcome message
-        mainPanel.add(createTopPanel(), BorderLayout.NORTH);
-        
-        // Center panel with split pane (information + table)
-        mainPanel.add(createCenterPanel(), BorderLayout.CENTER);
-        
-        // Bottom panel with options and buttons
-        mainPanel.add(createBottomPanel(), BorderLayout.SOUTH);
-        
-        add(mainPanel);
-        
-        // Load initial data
-        refreshTable();
+        initComponents();
     }
-    
-    private void setupMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
-        
-        // File menu
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener(e -> System.exit(0));
-        fileMenu.add(exitItem);
-        
-        // Students menu
-        JMenu studentsMenu = new JMenu("Students");
-        JMenuItem addItem = new JMenuItem("Add New Student");
-        addItem.addActionListener(e -> clearForm());
-        studentsMenu.add(addItem);
-        
-        JMenuItem showAllItem = new JMenuItem("Show All Records");
-        showAllItem.addActionListener(e -> showAllRecords());
-        studentsMenu.add(showAllItem);
-        
-        // Help menu
-        JMenu helpMenu = new JMenu("Help");
-        JMenuItem aboutItem = new JMenuItem("About");
-        aboutItem.addActionListener(e -> showAboutDialog());
-        helpMenu.add(aboutItem);
-        
-        menuBar.add(fileMenu);
-        menuBar.add(studentsMenu);
-        menuBar.add(helpMenu);
-        
-        setJMenuBar(menuBar);
-    }
-    
-    private JPanel createTopPanel() {
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(new Color(240, 248, 255));
-        
-        JLabel welcomeLabel = new JLabel("Welcome To Student Management System", 
-                                          SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        welcomeLabel.setForeground(new Color(0, 102, 204));
-        
-        statusLabel = new JLabel("", SwingConstants.CENTER);
-        statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        statusLabel.setForeground(new Color(0, 153, 0));
-        
-        topPanel.add(welcomeLabel, BorderLayout.CENTER);
-        topPanel.add(statusLabel, BorderLayout.SOUTH);
-        
-        return topPanel;
-    }
-    
-    private JPanel createCenterPanel() {
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setDividerLocation(400);
-        splitPane.setResizeWeight(0.3);
-        
-        // Left panel - Student Information Form
-        splitPane.setLeftComponent(createStudentInfoPanel());
-        
-        // Right panel - Students Records Table
-        splitPane.setRightComponent(createRecordsPanel());
-        
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.add(splitPane, BorderLayout.CENTER);
-        
-        return centerPanel;
-    }
-    
-    private JPanel createStudentInfoPanel() {
-        JPanel infoPanel = new JPanel(new BorderLayout());
-        infoPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createEtchedBorder(), "Students Information"));
-        
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-        
-        // Names
-        gbc.gridx = 0; gbc.gridy = 0;
-        formPanel.add(new JLabel("Names:"), gbc);
-        
-        gbc.gridy = 1;
-        nameField = new JTextField(20);
-        formPanel.add(nameField, gbc);
-        
-        // Email
-        gbc.gridy = 2;
-        formPanel.add(new JLabel("Email:"), gbc);
-        
-        gbc.gridy = 3;
-        emailField = new JTextField(20);
-        formPanel.add(emailField, gbc);
-        
-        // Course
-        gbc.gridy = 4;
-        formPanel.add(new JLabel("Course:"), gbc);
-        
-        gbc.gridy = 5;
-        String[] courses = {
-    "Computer Engineering",
-    "Computer Science",
-    "Information Technology",
-    "Civil Engineering",
-    "Mining",
-    "Telecommunication"
-};
 
-courseField = new JComboBox<>(courses);
-formPanel.add(courseField, gbc);
-        
-        // Marks
-        gbc.gridy = 6;
-        formPanel.add(new JLabel("Marks:"), gbc);
-        
-        gbc.gridy = 7;
-        marksField = new JTextField(20);
-        formPanel.add(marksField, gbc);
-        
-        // Marks range info
-        gbc.gridy = 8;
-        JLabel rangeLabel = new JLabel("Marks ranges from 0 - 100");
-        rangeLabel.setFont(new Font("Arial", Font.ITALIC, 12));
-        rangeLabel.setForeground(Color.GRAY);
-        formPanel.add(rangeLabel, gbc);
-        
-        infoPanel.add(formPanel, BorderLayout.CENTER);
-        
-        return infoPanel;
-    }
-    
-    private JPanel createRecordsPanel() {
-        JPanel recordsPanel = new JPanel(new BorderLayout());
-        recordsPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createEtchedBorder(), "Students Records"));
-        
-        // Create table
-        String[] columns = {"ID", "Names", "Email", "Course", "Marks"};
-        tableModel = new DefaultTableModel(columns, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Make table non-editable
-            }
-        };
-        
-        studentsTable = new JTable(tableModel);
-        
-        // Set up row sorter for filtering
-        rowSorter = new TableRowSorter<>(tableModel);
-        studentsTable.setRowSorter(rowSorter);
-        
-        studentsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        studentsTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                loadSelectedStudent();
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtname = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtemail = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        combocourse = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtemail1 = new javax.swing.JTextField();
+        label3 = new java.awt.Label();
+        jPanel5 = new javax.swing.JPanel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        panel1 = new java.awt.Panel();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        label2 = new java.awt.Label();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        button3 = new java.awt.Button();
+        btnadd = new java.awt.Button();
+        button4 = new java.awt.Button();
+        btnupdate = new java.awt.Button();
+        button5 = new java.awt.Button();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jScrollPane3.setBackground(new java.awt.Color(0, 174, 239));
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "STUDENTS RECORDS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jScrollPane3.setToolTipText("ffffff");
+        jScrollPane3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane3.setDoubleBuffered(true);
+        jScrollPane3.setEnabled(false);
+        jScrollPane3.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                jScrollPane3ComponentAdded(evt);
             }
         });
-        
-        // Add table to scroll pane
-        JScrollPane scrollPane = new JScrollPane(studentsTable);
-        studentsTable.setFillsViewportHeight(true);
-        
-        recordsPanel.add(scrollPane, BorderLayout.CENTER);
-        
-        return recordsPanel;
-    }
-    
-    private JPanel createBottomPanel() {
-        JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
-        bottomPanel.setBorder(BorderFactory.createEtchedBorder());
-        
-        // Options panel
-        JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        optionsPanel.setBorder(BorderFactory.createTitledBorder("Options"));
-        
-        // Sort options
-        optionsPanel.add(new JLabel("Sort By:"));
-        JRadioButton descButton = new JRadioButton("Descending");
-        JRadioButton ascButton = new JRadioButton("Ascending");
-        ButtonGroup sortGroup = new ButtonGroup();
-        sortGroup.add(descButton);
-        sortGroup.add(ascButton);
-        ascButton.setSelected(true);
-        
-        // Add sort listeners
-        descButton.addActionListener(e -> sortTable(false));
-        ascButton.addActionListener(e -> sortTable(true));
-        
-        optionsPanel.add(descButton);
-        optionsPanel.add(ascButton);
-        
-        // Pass/Fail checkboxes
-        JCheckBox passCheck = new JCheckBox("Pass");
-        JCheckBox failCheck = new JCheckBox("Fail");
-        
-        // Add filter listeners
-        passCheck.addActionListener(e -> filterByPassFail(passCheck, failCheck));
-        failCheck.addActionListener(e -> filterByPassFail(passCheck, failCheck));
-        
-        optionsPanel.add(passCheck);
-        optionsPanel.add(failCheck);
-        
-        // Buttons panel
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-        
-        // Create buttons with styling
-        JButton addButton = createStyledButton("+ Add", new Color(0, 153, 76));
-        JButton updateButton = createStyledButton("Update", new Color(255, 153, 0));
-        JButton deleteButton = createStyledButton("Delete", new Color(204, 0, 0));
-        JButton searchButton = createStyledButton("Search", new Color(0, 102, 204));
-        JButton showAllButton = createStyledButton("Show All", new Color(102, 0, 204));
-        
-        // Add action listeners
-        addButton.addActionListener(e -> addStudent());
-        updateButton.addActionListener(e -> updateStudent());
-        deleteButton.addActionListener(e -> deleteStudent());
-        searchButton.addActionListener(e -> searchStudent());
-        showAllButton.addActionListener(e -> showAllRecords());
-        
-        buttonsPanel.add(addButton);
-        buttonsPanel.add(updateButton);
-        buttonsPanel.add(deleteButton);
-        buttonsPanel.add(searchButton);
-        buttonsPanel.add(showAllButton);
-       
-        bottomPanel.add(optionsPanel, BorderLayout.NORTH);
-        bottomPanel.add(buttonsPanel, BorderLayout.CENTER);
-        
-        return bottomPanel;
-    }
-    
-    private JButton createStyledButton(String text, Color bgColor) {
-        JButton button = new JButton(text);
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
-        return button;
-    }
-    
-    private void initSampleData() {
-        // Add sample data
-//        students.add(new Student(currentId++, "Jean D Amour Niyonsaba", 
-//                                "jean@gmail.com", "Computer Engineering", 97));
-//        students.add(new Student(currentId++, "Emelyne", 
-//                                "em@gmail.com", "Comp Engineering", 97));
-//        students.add(new Student(currentId++, "David", 
-//                                "david@gmail.com", "Civil Engineering", 80));
-//        students.add(new Student(currentId++, "Moise", 
-//                                "moise@gmail.com", "Inform Techn", 78));
-//        students.add(new Student(currentId++, "Egide", 
-//                                "egide@gmail.com", "Info System", 70));
-//        students.add(new Student(currentId++, "Alice", 
-//                                "alice@gmail.com", "Computer Science", 85));
-//        students.add(new Student(currentId++, "Bob", 
-//                                "bob@gmail.com", "Mathematics", 92));
-//        students.add(new Student(currentId++, "Charlie", 
-          //                      "charlie@gmail.com", "Physics", 88));
-    }
-    
-    private void refreshTable() {
-        tableModel.setRowCount(0);
-        for (Student student : students) {
-            tableModel.addRow(new Object[]{
-                student.getId(),
-                student.getName(),
-                student.getEmail(),
-                student.getCourse(),
-                student.getMarks()
-            });
-        }
-        isFiltered = false;
-        showStatus("Showing all " + students.size() + " records", true);
-    }
-    
-    private void clearForm() {
-    nameField.setText("");
-    emailField.setText("");
-    courseField.setSelectedIndex(0);
-    marksField.setText("");
-}
-    private void addStudent() {
+
+        jTable3.setBackground(new java.awt.Color(0, 174, 239));
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Names", "Email", "Course", "Marks"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable3.setColumnSelectionAllowed(true);
+        jTable3.setShowGrid(true);
+        jScrollPane3.setViewportView(jTable3);
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "STUDENT INFORMATION", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jPanel4.setToolTipText("st");
+
+        jLabel2.setText("Names:");
+
+        txtname.setText(" ");
+        txtname.addActionListener(this::txtnameActionPerformed);
+
+        jLabel4.setText("Email:");
+
+        txtemail.setText(" ");
+
+        jLabel5.setText("Courses:");
+
+        combocourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Computer Engineering", "Civil Engineering", "Telecommunication", "Computer Science", "Mining", "Information Technology" }));
+        combocourse.addActionListener(this::combocourseActionPerformed);
+
+        jLabel6.setText("Marks  :");
+
+        jLabel7.setBackground(new java.awt.Color(250, 242, 242));
+        jLabel7.setForeground(new java.awt.Color(80, 150, 0));
+        jLabel7.setText("Marks range: 0-100");
+
+        txtemail1.setText(" ");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(combocourse, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtemail1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtemail1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combocourse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
+        label3.setBackground(new java.awt.Color(200, 242, 242));
+        label3.setForeground(new java.awt.Color(0, 200, 0));
+        label3.setName("                   Welcome To Student Mangament System                   Record Added Successfully"); // NOI18N
+        label3.setText("                   Welcome To Student Mangament System                   Record Added Successfully");
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jRadioButton1.setSelected(true);
+        jRadioButton1.setText("Sort By:");
+        jRadioButton1.addActionListener(this::jRadioButton1ActionPerformed);
+
+        jRadioButton2.setText("Descending");
+
+        panel1.setBackground(new java.awt.Color(242, 242, 242));
+        panel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        panel1.setForeground(new java.awt.Color(0, 0, 50));
+
+        jRadioButton3.setSelected(true);
+        jRadioButton3.setText("Ascending");
+
+        label2.setText("Sort By:");
+
+        jCheckBox1.setText("Pass");
+
+        jCheckBox2.setText("Fail");
+
+        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
+        panel1.setLayout(panel1Layout);
+        panel1Layout.setHorizontalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(jRadioButton3)
+                .addGap(30, 30, 30)
+                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(78, Short.MAX_VALUE))
+        );
+        panel1Layout.setVerticalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(label2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButton3)
+                        .addComponent(jCheckBox1)
+                        .addComponent(jCheckBox2)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jRadioButton1)
+                .addGap(58, 58, 58)
+                .addComponent(jRadioButton2)
+                .addGap(19, 19, 19)
+                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(211, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton1)))
+        );
+
+        button3.setBackground(new java.awt.Color(128, 128, 150));
+        button3.setLabel("Search");
+
+        btnadd.setBackground(new java.awt.Color(24, 245, 24));
+        btnadd.setLabel("+ Add");
+        btnadd.addActionListener(this::btnaddActionPerformed);
+
+        button4.setBackground(new java.awt.Color(242, 25, 24));
+        button4.setLabel("Delete");
+
+        btnupdate.setBackground(new java.awt.Color(255, 255, 0));
+        btnupdate.setLabel("Update");
+        btnupdate.addActionListener(this::btnupdateActionPerformed);
+
+        button5.setBackground(new java.awt.Color(12, 12, 150));
+        button5.setForeground(new java.awt.Color(250, 250, 250));
+        button5.setLabel("Show All");
+
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Management System", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+
+        jMenu2.setText("File");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Students");
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Help");
+        jMenuBar1.add(jMenu4);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(205, 205, 205))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(88, 88, 88)
+                                .addComponent(btnadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(116, 116, 116)
+                                .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(101, 101, 101)
+                                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(121, 121, 121)
+                                .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(128, 128, 128)
+                                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(125, 125, 125)
+                        .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jScrollPane3ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jScrollPane3ComponentAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrollPane3ComponentAdded
+
+    private void txtnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtnameActionPerformed
+
+    private void combocourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combocourseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_combocourseActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnaddActionPerformed
+
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnupdateActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
         try {
-            String name = nameField.getText().trim();
-            String email = emailField.getText().trim();
-           String course = courseField.getSelectedItem().toString();
-            int marks = Integer.parseInt(marksField.getText().trim());
-            
-            if (name.isEmpty() || email.isEmpty() || course.isEmpty()) {
-                showStatus("Please fill all fields!", false);
-                return;
-            }
-            
-            if (marks < 0 || marks > 100) {
-                showStatus("Marks must be between 0 and 100!", false);
-                return;
-            }
-            
-            Student student = new Student(currentId++, name, email, course, marks);
-            students.add(student);
-            
-            refreshTable();
-            clearForm();
-            showStatus("Record Added Successfully!", true);
-            
-        } catch (NumberFormatException ex) {
-            showStatus("Invalid marks format!", false);
-        }
-    }
-    
-    private void updateStudent() {
-        int selectedRow = studentsTable.getSelectedRow();
-        if (selectedRow >= 0) {
-            // Convert view row to model row (important when filter is applied)
-            int modelRow = studentsTable.convertRowIndexToModel(selectedRow);
-            int id = (int) tableModel.getValueAt(modelRow, 0);
-            
-            try {
-                String name = nameField.getText().trim();
-                String email = emailField.getText().trim();
-               String course = courseField.getSelectedItem().toString();
-                int marks = Integer.parseInt(marksField.getText().trim());
-                
-                if (name.isEmpty() || email.isEmpty() || course.isEmpty()) {
-                    showStatus("Please fill all fields!", false);
-                    return;
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
                 }
-                
-                if (marks < 0 || marks > 100) {
-                    showStatus("Marks must be between 0 and 100!", false);
-                    return;
-                }
-                
-                for (Student student : students) {
-                    if (student.getId() == id) {
-                        student.setName(name);
-                        student.setEmail(email);
-                        student.setCourse(course);
-                        student.setMarks(marks);
-                        break;
-                    }
-                }
-                
-                refreshTable();
-                clearForm();
-                showStatus("Record Updated Successfully!", true);
-                
-            } catch (NumberFormatException ex) {
-                showStatus("Invalid marks format!", false);
             }
-        } else {
-            showStatus("Please select a student to update!", false);
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new Main_Page().setVisible(true));
     }
-    
-    private void deleteStudent() {
-        int selectedRow = studentsTable.getSelectedRow();
-        if (selectedRow >= 0) {
-            int confirm = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete this record?",
-                "Confirm Delete",
-                JOptionPane.YES_NO_OPTION);
-                
-            if (confirm == JOptionPane.YES_OPTION) {
-                // Convert view row to model row
-                int modelRow = studentsTable.convertRowIndexToModel(selectedRow);
-                int id = (int) tableModel.getValueAt(modelRow, 0);
-                
-                students.removeIf(student -> student.getId() == id);
-                refreshTable();
-                clearForm();
-                showStatus("Record Deleted Successfully!", true);
-            }
-        } else {
-            showStatus("Please select a student to delete!", false);
-        }
-    }
-    
-    private void searchStudent() {
-        // Create a custom search dialog
-        JPanel searchPanel = new JPanel(new GridLayout(4, 1, 5, 5));
-        
-        JComboBox<String> searchTypeCombo = new JComboBox<>(
-            new String[]{"Name", "ID", "Email", "Course", "Marks"});
-        JTextField searchField = new JTextField(20);
-        
-        searchPanel.add(new JLabel("Search by:"));
-        searchPanel.add(searchTypeCombo);
-        searchPanel.add(new JLabel("Enter search term:"));
-        searchPanel.add(searchField);
-        
-        int result = JOptionPane.showConfirmDialog(this, searchPanel, 
-            "Search Student", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        
-        if (result == JOptionPane.OK_OPTION) {
-            String searchTerm = searchField.getText().trim().toLowerCase();
-            String searchType = (String) searchTypeCombo.getSelectedItem();
-            
-            if (!searchTerm.isEmpty()) {
-                filterTable(searchTerm, searchType);
-            } else {
-                showStatus("Please enter a search term!", false);
-            }
-        }
-    }
-    
-    private void filterTable(String searchTerm, String searchType) {
-        List<Student> filteredList = new ArrayList<>();
-        
-        for (Student student : students) {
-            boolean matches = false;
-            
-            switch (searchType) {
-                case "Name":
-                    matches = student.getName().toLowerCase().contains(searchTerm);
-                    break;
-                case "ID":
-                    matches = String.valueOf(student.getId()).equals(searchTerm);
-                    break;
-                case "Email":
-                    matches = student.getEmail().toLowerCase().contains(searchTerm);
-                    break;
-                case "Course":
-                    matches = student.getCourse().toLowerCase().contains(searchTerm);
-                    break;
-                case "Marks":
-                    try {
-                        int marks = Integer.parseInt(searchTerm);
-                        matches = student.getMarks() == marks;
-                    } catch (NumberFormatException e) {
-                        // If not a number, don't match
-                    }
-                    break;
-            }
-            
-            if (matches) {
-                filteredList.add(student);
-            }
-        }
-        
-        if (!filteredList.isEmpty()) {
-            displayFilteredResults(filteredList);
-            showStatus("Found " + filteredList.size() + " matching record(s)", true);
-        } else {
-            showStatus("No matching records found!", false);
-        }
-    }
-    
-    private void displayFilteredResults(List<Student> filteredList) {
-        tableModel.setRowCount(0);
-        for (Student student : filteredList) {
-            tableModel.addRow(new Object[]{
-                student.getId(),
-                student.getName(),
-                student.getEmail(),
-                student.getCourse(),
-                student.getMarks()
-            });
-        }
-        isFiltered = true;
-    }
-    
-    private void showAllRecords() {
-        refreshTable();
-        showStatus("Showing all " + students.size() + " records", true);
-    }
-    
-    private void sortTable(boolean ascending) {
-        List<Student> listToSort = isFiltered ? getCurrentTableData() : students;
-        
-        if (ascending) {
-            listToSort.sort((s1, s2) -> s1.getName().compareTo(s2.getName()));
-        } else {
-            listToSort.sort((s1, s2) -> s2.getName().compareTo(s1.getName()));
-        }
-        
-        // Refresh table display
-        tableModel.setRowCount(0);
-        for (Student student : listToSort) {
-            tableModel.addRow(new Object[]{
-                student.getId(),
-                student.getName(),
-                student.getEmail(),
-                student.getCourse(),
-                student.getMarks()
-            });
-        }
-        
-        showStatus("Records sorted " + (ascending ? "ascending" : "descending"), true);
-    }
-    
-    private List<Student> getCurrentTableData() {
-        List<Student> currentData = new ArrayList<>();
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            int id = (int) tableModel.getValueAt(i, 0);
-            String name = (String) tableModel.getValueAt(i, 1);
-            String email = (String) tableModel.getValueAt(i, 2);
-            String course = (String) tableModel.getValueAt(i, 3);
-            int marks = (int) tableModel.getValueAt(i, 4);
-            
-            currentData.add(new Student(id, name, email, course, marks));
-        }
-        return currentData;
-    }
-    
-    private void filterByPassFail(JCheckBox passCheck, JCheckBox failCheck) {
-        boolean showPass = passCheck.isSelected();
-        boolean showFail = failCheck.isSelected();
-        
-        // If both are selected or neither is selected, show all
-        if ((showPass && showFail) || (!showPass && !showFail)) {
-            refreshTable();
-            return;
-        }
-        
-        List<Student> filteredList = new ArrayList<>();
-        int passCount = 0, failCount = 0;
-        
-        for (Student student : students) {
-            boolean isPass = student.getMarks() >= 50;
-            
-            if (showPass && isPass) {
-                filteredList.add(student);
-                passCount++;
-            } else if (showFail && !isPass) {
-                filteredList.add(student);
-                failCount++;
-            }
-        }
-        
-        if (!filteredList.isEmpty()) {
-            displayFilteredResults(filteredList);
-            if (showPass) {
-                showStatus("Showing " + passCount + " students who passed", true);
-            } else {
-                showStatus("Showing " + failCount + " students who failed", true);
-            }
-        } else {
-            showStatus("No students match the selected criteria", false);
-        }
-    }
-    
-    private void loadSelectedStudent() {
-        int selectedRow = studentsTable.getSelectedRow();
-        if (selectedRow >= 0) {
-            // Convert view row to model row
-            int modelRow = studentsTable.convertRowIndexToModel(selectedRow);
-            nameField.setText(tableModel.getValueAt(modelRow, 1).toString());
-            emailField.setText(tableModel.getValueAt(modelRow, 2).toString());
-courseField.setSelectedItem(tableModel.getValueAt(modelRow, 3).toString());
-            marksField.setText(tableModel.getValueAt(modelRow, 4).toString());
-        }
-    }
-    
-    private void showStatus(String message, boolean success) {
-        statusLabel.setText(message);
-        statusLabel.setForeground(success ? new Color(0, 153, 0) : Color.RED);
-        
-        // Hide status after 3 seconds
-        Timer timer = new Timer(3000, e -> statusLabel.setText(""));
-        timer.setRepeats(false);
-        timer.start();
-    }
-    
-    private void showAboutDialog() {
-        JOptionPane.showMessageDialog(this,
-            "Student Management System\nVersion 1.0\n\n" +
-            "A simple application to manage student records.\n\n" +
-            "Features:\n" +
-            "• Add, Update, Delete student records\n" +
-            "• Search by Name, ID, Email, Course, or Marks\n" +
-            "• Show All Records\n" +
-            "• Filter by Pass/Fail\n" +
-            "• Sort records",
-            "About",
-            JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    // Student inner class
-    private class Student {
-        private int id;
-        private String name;
-        private String email;
-        private String course;
-        private int marks;
-        
-        public Student(int id, String name, String email, String course, int marks) {
-            this.id = id;
-            this.name = name;
-            this.email = email;
-            this.course = course;
-            this.marks = marks;
-        }
-        
-        // Getters and setters
-        public int getId() { return id; }
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-        public String getCourse() { return course; }
-        public void setCourse(String course) { this.course = course; }
-        public int getMarks() { return marks; }
-        public void setMarks(int marks) { this.marks = marks; }
-    }
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Main_Page().setVisible(true);
-        });
-    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Button btnadd;
+    private java.awt.Button btnupdate;
+    private java.awt.Button button3;
+    private java.awt.Button button4;
+    private java.awt.Button button5;
+    private javax.swing.JComboBox<String> combocourse;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable3;
+    private java.awt.Label label2;
+    private java.awt.Label label3;
+    private java.awt.Panel panel1;
+    private javax.swing.JTextField txtemail;
+    private javax.swing.JTextField txtemail1;
+    private javax.swing.JTextField txtname;
+    // End of variables declaration//GEN-END:variables
 }
