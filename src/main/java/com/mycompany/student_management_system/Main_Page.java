@@ -53,11 +53,12 @@ public class Main_Page extends javax.swing.JFrame {
         label2 = new java.awt.Label();
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
-        button3 = new java.awt.Button();
         btnadd = new java.awt.Button();
         button4 = new java.awt.Button();
         btnupdate = new java.awt.Button();
         button5 = new java.awt.Button();
+        jsearchfield = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -269,9 +270,6 @@ public class Main_Page extends javax.swing.JFrame {
                     .addComponent(jRadioButton1)))
         );
 
-        button3.setBackground(new java.awt.Color(128, 128, 150));
-        button3.setLabel("Search");
-
         btnadd.setBackground(new java.awt.Color(24, 245, 24));
         btnadd.setLabel("+ Add");
         btnadd.addActionListener(this::btnaddActionPerformed);
@@ -287,6 +285,10 @@ public class Main_Page extends javax.swing.JFrame {
         button5.setBackground(new java.awt.Color(12, 12, 150));
         button5.setForeground(new java.awt.Color(250, 250, 250));
         button5.setLabel("Show All");
+
+        jsearchfield.addActionListener(this::jsearchfieldActionPerformed);
+
+        jLabel1.setText("Search");
 
         jMenuBar1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Management System", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
@@ -305,33 +307,37 @@ public class Main_Page extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(205, 205, 205))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
+                        .addContainerGap(120, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(88, 88, 88)
-                                .addComponent(btnadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(116, 116, 116)
-                                .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(101, 101, 101)
-                                .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(121, 121, 121)
-                                .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(128, 128, 128)
-                                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(88, 88, 88)
+                                        .addComponent(btnadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(116, 116, 116)
+                                        .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(101, 101, 101)
+                                        .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(121, 121, 121)
+                                        .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(73, 73, 73)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jsearchfield, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(125, 125, 125)
+                                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(56, 56, 56)))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,10 +353,12 @@ public class Main_Page extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(button5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnadd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jsearchfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -374,7 +382,48 @@ public class Main_Page extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
-        // TODO add your handling code here:
+    // 1. Get data from UI components
+       String name = txtname.getText().trim();
+       String email = txtemail1.getText().trim(); // Field next to "Email" label
+       String course = combocourse.getSelectedItem().toString();
+       String marksStr = txtemail.getText().trim(); // Field next to "Marks" label
+
+       // 2. Simple validation
+       if (name.isEmpty() || email.isEmpty() || marksStr.isEmpty()) {
+           JOptionPane.showMessageDialog(this, "Please fill in all fields!");
+           return;
+       }
+
+       try {
+           // 3. Connect to Database
+           java.sql.Connection conn = DBConnection.getConnection();
+
+           // 4. Prepare SQL Statement
+           // Note: 'password' is required by your schema, so we provide a default
+           String sql = "INSERT INTO students (name, email, course, marks) VALUES (?, ?, ?, ?)";
+           java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+
+           pst.setString(1, name);
+           pst.setString(2, email);
+           pst.setString(3, course);
+           pst.setString(4, marksStr);
+
+           // 5. Execute
+           pst.executeUpdate();
+
+           // 6. Success Feedback
+           JOptionPane.showMessageDialog(this, "Student Added Successfully!");
+
+           // 7. Refresh the UI
+           table_update(); // This method reloads the table list
+           clearFields();  // Helper method to reset the form
+
+       } catch (java.sql.SQLIntegrityConstraintViolationException e) {
+           JOptionPane.showMessageDialog(this, "This email is already registered!");
+       } catch (Exception e) {
+           JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+           e.printStackTrace();
+       }       // TODO add your handling code here:
     }//GEN-LAST:event_btnaddActionPerformed
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
@@ -449,9 +498,47 @@ public class Main_Page extends javax.swing.JFrame {
                 table_update();
             }
         } catch (Exception e) {
+            
             e.printStackTrace();
+            
         }
     }//GEN-LAST:event_button4ActionPerformed
+
+    private void jsearchfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsearchfieldActionPerformed
+      String searchData = jsearchfield.getText();
+      int columnCount;
+
+      try {
+          java.sql.Connection conn = DBConnection.getConnection();
+          // Search by Name OR Email
+          java.sql.PreparedStatement pst = conn.prepareStatement(
+              "SELECT * FROM students WHERE name LIKE ? OR email LIKE ?"
+          );
+          pst.setString(1, "%" + searchData + "%");
+          pst.setString(2, "%" + searchData + "%");
+
+          java.sql.ResultSet rs = pst.executeQuery();
+          java.sql.ResultSetMetaData rd = rs.getMetaData();
+          columnCount = rd.getColumnCount();
+
+          DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
+          df.setRowCount(0);
+
+          while (rs.next()) {
+              java.util.Vector v2 = new java.util.Vector();
+              for (int a = 1; a <= columnCount; a++) {
+                  v2.add(rs.getString("id"));
+                  v2.add(rs.getString("name"));
+                  v2.add(rs.getString("email"));
+                  v2.add(rs.getString("course"));
+                  v2.add(rs.getString("marks"));
+              }
+              df.addRow(v2);
+          }
+      } catch (Exception e) {
+          e.printStackTrace();
+      }  // TODO add your handling code here:
+    }//GEN-LAST:event_jsearchfieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -506,16 +593,24 @@ public class Main_Page extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Main_Page().setVisible(true));
     }
+    
+    private void clearFields() {
+    txtname.setText("");
+    txtemail1.setText("");
+    txtemail.setText("");
+    combocourse.setSelectedIndex(0);
+    txtname.requestFocus(); // Puts the cursor back in the Name box
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button btnadd;
     private java.awt.Button btnupdate;
-    private java.awt.Button button3;
     private java.awt.Button button4;
     private java.awt.Button button5;
     private javax.swing.JComboBox<String> combocourse;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -532,6 +627,7 @@ public class Main_Page extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable3;
+    private javax.swing.JTextField jsearchfield;
     private java.awt.Label label2;
     private java.awt.Label label3;
     private java.awt.Panel panel1;
