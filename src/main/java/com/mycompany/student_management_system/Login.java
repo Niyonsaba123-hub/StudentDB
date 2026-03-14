@@ -8,6 +8,7 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        DBConnection.getConnection();
     }
 
     @SuppressWarnings("unchecked")
@@ -137,7 +138,7 @@ public class Login extends javax.swing.JFrame {
         String username = textusername.getText();
         String password = new String(passwordd.getPassword());
 
-        if ("Jean".equals(username) && "12345678".equals(password)) {
+        if ("Jean".equals(username) && "1234".equals(password)) {
 
             java.awt.EventQueue.invokeLater(() -> new Main_Page().setVisible(true));
             this.dispose();
