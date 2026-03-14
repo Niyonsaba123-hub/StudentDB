@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.student_management_system;
-
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import java.util.Vector;
 /**
  *
  * @author user
@@ -17,6 +20,7 @@ public class Main_Page extends javax.swing.JFrame {
      */
     public Main_Page() {
         initComponents();
+        table_update();
     }
 
     /**
@@ -274,6 +278,7 @@ public class Main_Page extends javax.swing.JFrame {
 
         button4.setBackground(new java.awt.Color(242, 25, 24));
         button4.setLabel("Delete");
+        button4.addActionListener(this::button4ActionPerformed);
 
         btnupdate.setBackground(new java.awt.Color(255, 255, 0));
         btnupdate.setLabel("Update");
@@ -373,12 +378,113 @@ public class Main_Page extends javax.swing.JFrame {
     }//GEN-LAST:event_btnaddActionPerformed
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
+        int selectedIndex = jTable3.getSelectedRow();
+
+        // 1. Check if a row is selected
+        if(selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a student from the table to update!");
+            return;
+        }
+
+        try {
+            // 2. Get the ID from the selected table row
+            int id = Integer.parseInt(df.getValueAt(selectedIndex, 0).toString());
+
+            // 3. Get the new values from your UI input fields
+            String name = txtname.getText();
+            String email = txtemail1.getText(); // Your email field
+            String course = combocourse.getSelectedItem().toString();
+            String marks = txtemail.getText();   // Your marks field
+
+            // 4. Connect and execute the Update
+            java.sql.Connection conn = DBConnection.getConnection();
+            java.sql.PreparedStatement pst = conn.prepareStatement(
+                "UPDATE students SET name=?, email=?, course=?, marks=? WHERE id=?"
+            );
+
+            pst.setString(1, name);
+            pst.setString(2, email);
+            pst.setString(3, course);
+            pst.setString(4, marks);
+            pst.setInt(5, id);
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Record Updated Successfully!");
+
+            // 5. Refresh UI
+            table_update(); // Reload the table with new data
+
+            // 6. Clear fields
+            txtname.setText("");
+            txtemail1.setText("");
+            txtemail.setText("");
+            txtname.requestFocus();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnupdateActionPerformed
+
+    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
+        DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
+        int selectedIndex = jTable3.getSelectedRow();
+
+        if(selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a record to delete");
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(df.getValueAt(selectedIndex, 0).toString());
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to delete this record?", "Warning", JOptionPane.YES_NO_OPTION);
+
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pst = conn.prepareStatement("delete from students where id=?");
+                pst.setInt(1, id);
+                pst.executeUpdate();
+                table_update();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_button4ActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
+    
+    private void table_update() {
+    int columnCount;
+    try {
+        Connection conn = DBConnection.getConnection();
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM students");
+        ResultSet rs = pst.executeQuery();
+        ResultSetMetaData rd = rs.getMetaData();
+        columnCount = rd.getColumnCount();
+        DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
+        df.setRowCount(0);
+
+        while (rs.next()) {
+            Vector v2 = new Vector();
+            for (int a = 1; a <= columnCount; a++) {
+                v2.add(rs.getString("id"));
+                v2.add(rs.getString("name"));
+                v2.add(rs.getString("email"));
+                v2.add(rs.getString("course"));
+                v2.add(rs.getString("marks"));
+            }
+            df.addRow(v2);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

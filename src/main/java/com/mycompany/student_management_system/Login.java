@@ -180,7 +180,7 @@ public class Login extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
