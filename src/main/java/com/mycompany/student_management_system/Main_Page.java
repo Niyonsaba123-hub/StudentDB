@@ -293,9 +293,11 @@ public class Main_Page extends javax.swing.JFrame {
         jMenuBar1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Management System", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         jMenu2.setText("File");
+        
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Students");
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Help");
