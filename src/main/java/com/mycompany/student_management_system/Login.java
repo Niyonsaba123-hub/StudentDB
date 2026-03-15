@@ -1,11 +1,11 @@
 package com.mycompany.student_management_system;
 
 import javax.swing.JOptionPane;
-
+import java.util.prefs.Preferences;
 public class Login extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
-
+private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
     public Login() {
         initComponents();
         DBConnection.getConnection();
@@ -119,6 +119,16 @@ public class Login extends javax.swing.JFrame {
         String password = new String(passwordd.getPassword());
 
         if ("Jean".equals(username) && "1234".equals(password)) {
+
+             if (remember.isSelected()) {
+                prefs.putBoolean("rememberMe", true);
+                prefs.put("username", username);
+                prefs.put("password", password);
+            } else {
+                prefs.putBoolean("rememberMe", false);
+                prefs.remove("username");
+                prefs.remove("password");
+            }
 
             java.awt.EventQueue.invokeLater(() -> new Main_Page().setVisible(true));
             this.dispose();

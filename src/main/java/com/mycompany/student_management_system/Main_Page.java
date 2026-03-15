@@ -53,9 +53,9 @@ public class Main_Page extends javax.swing.JFrame {
         label2 = new java.awt.Label();
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
-        btnadd = new java.awt.Button();
-        button4 = new java.awt.Button();
-        btnupdate = new java.awt.Button();
+        btnadd = new javax.swing.JButton("+ Add");
+        btnupdate = new javax.swing.JButton("Update");
+        button4 = new javax.swing.JButton("Delete");
         button5 = new java.awt.Button();
         jsearchfield = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -293,16 +293,49 @@ public class Main_Page extends javax.swing.JFrame {
         jMenuBar1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Student Management System", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         jMenu2.setText("File");
-        
+        // File -> Exit
+javax.swing.JMenuItem exitItem = new javax.swing.JMenuItem("Exit");
+exitItem.addActionListener(e -> System.exit(0));
+jMenu2.add(exitItem);
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Students");
 
-        jMenuBar1.add(jMenu3);
+       jMenu3.setText("Students"); // Students menu
 
-        jMenu4.setText("Help");
-        jMenuBar1.add(jMenu4);
+// Example menu items
+javax.swing.JMenuItem addStudentItem = new javax.swing.JMenuItem("Add Student");
+addStudentItem.addActionListener(e -> btnadd.doClick()); // Trigger Add button
 
+javax.swing.JMenuItem updateStudentItem = new javax.swing.JMenuItem("Update Student");
+updateStudentItem.addActionListener(e -> btnupdate.doClick()); // Trigger Update button
+
+javax.swing.JMenuItem deleteStudentItem = new javax.swing.JMenuItem("Delete Student");
+deleteStudentItem.addActionListener(e -> button4.doClick()); // Trigger Delete button
+
+// Add items to the Students menu
+jMenu3.add(addStudentItem);
+jMenu3.add(updateStudentItem);
+jMenu3.add(deleteStudentItem);
+
+// Finally, add the menu to the menu bar
+jMenuBar1.add(jMenu3);
+
+      jMenu4.setText("Help"); // Help menu
+
+// Example menu items
+javax.swing.JMenuItem aboutItem = new javax.swing.JMenuItem("About");
+aboutItem.addActionListener(e -> 
+    javax.swing.JOptionPane.showMessageDialog(this, 
+        "Student Management System v1.0\nDeveloped by Your Name", 
+        "About", 
+        javax.swing.JOptionPane.INFORMATION_MESSAGE)
+);
+
+// Add items to the Help menu
+jMenu4.add(aboutItem);
+
+// Finally, add the menu to the menu bar
+jMenuBar1.add(jMenu4);
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -605,9 +638,9 @@ public class Main_Page extends javax.swing.JFrame {
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button btnadd;
-    private java.awt.Button btnupdate;
-    private java.awt.Button button4;
+    private javax.swing.JButton btnadd;
+private javax.swing.JButton btnupdate;
+private javax.swing.JButton button4;
     private java.awt.Button button5;
     private javax.swing.JComboBox<String> combocourse;
     private javax.swing.JCheckBox jCheckBox1;
