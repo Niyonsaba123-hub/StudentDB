@@ -32,6 +32,8 @@ public class Main_Page extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -46,13 +48,12 @@ public class Main_Page extends javax.swing.JFrame {
         txtemail1 = new javax.swing.JTextField();
         label3 = new java.awt.Label();
         jPanel5 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         panel1 = new java.awt.Panel();
         jRadioButton3 = new javax.swing.JRadioButton();
-        label2 = new java.awt.Label();
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
+        label2 = new java.awt.Label();
         btnadd = new java.awt.Button();
         button4 = new java.awt.Button();
         btnupdate = new java.awt.Button();
@@ -198,22 +199,21 @@ public class Main_Page extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Sort By:");
-        jRadioButton1.addActionListener(this::jRadioButton1ActionPerformed);
-
+        buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Descending");
+        jRadioButton2.addActionListener(this::jRadioButton2ActionPerformed);
 
         panel1.setBackground(new java.awt.Color(242, 242, 242));
         panel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         panel1.setForeground(new java.awt.Color(0, 0, 50));
 
+        buttonGroup1.add(jRadioButton3);
         jRadioButton3.setSelected(true);
         jRadioButton3.setText("Ascending");
-
-        label2.setText("Sort By:");
+        jRadioButton3.addActionListener(this::jRadioButton3ActionPerformed);
 
         jCheckBox1.setText("Pass");
+        jCheckBox1.addActionListener(this::jCheckBox1ActionPerformed);
 
         jCheckBox2.setText("Fail");
 
@@ -223,27 +223,26 @@ public class Main_Page extends javax.swing.JFrame {
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
                 .addComponent(jRadioButton3)
-                .addGap(30, 30, 30)
+                .addGap(109, 109, 109)
                 .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(43, 43, 43)
                 .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(label2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButton3)
                     .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButton3)
                         .addComponent(jCheckBox1)
                         .addComponent(jCheckBox2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
+
+        label2.setText("Sort By:");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -251,10 +250,10 @@ public class Main_Page extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jRadioButton1)
-                .addGap(58, 58, 58)
+                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
                 .addComponent(jRadioButton2)
-                .addGap(19, 19, 19)
+                .addGap(44, 44, 44)
                 .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(211, Short.MAX_VALUE))
         );
@@ -263,11 +262,12 @@ public class Main_Page extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton1)))
+                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         btnadd.setBackground(new java.awt.Color(24, 245, 24));
@@ -285,6 +285,7 @@ public class Main_Page extends javax.swing.JFrame {
         button5.setBackground(new java.awt.Color(12, 12, 150));
         button5.setForeground(new java.awt.Color(250, 250, 250));
         button5.setLabel("Show All");
+        button5.addActionListener(this::button5ActionPerformed);
 
         jsearchfield.addActionListener(this::jsearchfieldActionPerformed);
 
@@ -357,7 +358,7 @@ public class Main_Page extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jsearchfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -374,10 +375,6 @@ public class Main_Page extends javax.swing.JFrame {
     private void combocourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combocourseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_combocourseActionPerformed
-
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
     // 1. Get data from UI components
@@ -538,37 +535,83 @@ public class Main_Page extends javax.swing.JFrame {
       }  // TODO add your handling code here:
     }//GEN-LAST:event_jsearchfieldActionPerformed
 
+    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton3ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        table_update();        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        table_update();        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button5ActionPerformed
+        buttonGroup1.clearSelection(); // Resets Radio Buttons
+        jRadioButton3.setSelected(true); // Default to Ascending
+        jCheckBox1.setSelected(false); // Uncheck Pass
+        jCheckBox2.setSelected(false); // Uncheck Fail
+        jsearchfield.setText("");      // Clear Search
+        table_update();        // TODO add your handling code here:
+    }//GEN-LAST:event_button5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
     
     private void table_update() {
-    int columnCount;
-    try {
-        Connection conn = DBConnection.getConnection();
-        PreparedStatement pst = conn.prepareStatement("SELECT * FROM students");
-        ResultSet rs = pst.executeQuery();
-        ResultSetMetaData rd = rs.getMetaData();
-        columnCount = rd.getColumnCount();
-        DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
-        df.setRowCount(0);
+        int columnCount;
+        try {
+            Connection conn = DBConnection.getConnection();
 
-        while (rs.next()) {
-            Vector v2 = new Vector();
-            for (int a = 1; a <= columnCount; a++) {
-                v2.add(rs.getString("id"));
-                v2.add(rs.getString("name"));
-                v2.add(rs.getString("email"));
-                v2.add(rs.getString("course"));
-                v2.add(rs.getString("marks"));
+            // Base Query
+            StringBuilder query = new StringBuilder("SELECT * FROM students");
+            boolean hasFilter = false;
+
+            // 1. Handle Filtering (Pass/Fail)
+            // Checkboxes: Pass (jCheckBox1), Fail (jCheckBox2)
+            if (jCheckBox1.isSelected()) {
+                query.append(" WHERE marks >= 50");
+                hasFilter = true;
+            } else if (jCheckBox2.isSelected()) {
+                query.append(" WHERE marks < 50");
+                hasFilter = true;
             }
-            df.addRow(v2);
+
+            // 2. Handle Sorting (Ascending/Descending)
+            // Radio Buttons: Ascending (jRadioButton3), Descending (jRadioButton2)
+            if (jRadioButton3.isSelected()) {
+                query.append(" ORDER BY marks ASC");
+            } else if (jRadioButton2.isSelected()) {
+                query.append(" ORDER BY marks DESC");
+            }
+
+            PreparedStatement pst = conn.prepareStatement(query.toString());
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData rd = rs.getMetaData();
+            columnCount = rd.getColumnCount();
+
+            DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
+            df.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v2 = new Vector();
+                for (int a = 1; a <= columnCount; a++) {
+                    v2.add(rs.getString("id"));
+                    v2.add(rs.getString("name"));
+                    v2.add(rs.getString("email"));
+                    v2.add(rs.getString("course"));
+                    v2.add(rs.getString("marks"));
+                }
+                df.addRow(v2);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -605,6 +648,8 @@ public class Main_Page extends javax.swing.JFrame {
     private java.awt.Button btnupdate;
     private java.awt.Button button4;
     private java.awt.Button button5;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> combocourse;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
@@ -620,7 +665,6 @@ public class Main_Page extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane3;

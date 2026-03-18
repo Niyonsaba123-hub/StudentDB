@@ -9,6 +9,7 @@ private Preferences prefs = Preferences.userRoot().node(this.getClass().getName(
     public Login() {
         initComponents();
         DBConnection.getConnection();
+        textusername.setText("");
     }
 
     @SuppressWarnings("unchecked")
