@@ -5,11 +5,18 @@ import java.util.prefs.Preferences;
 public class Login extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
-private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
+    private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
     public Login() {
         initComponents();
         DBConnection.getConnection();
         textusername.setText("");
+        if (prefs.getBoolean("rememberMe", false)) {
+            textusername.setText(prefs.get("username", ""));
+            passwordd.setText(prefs.get("password", ""));
+            remember.setSelected(true);
+        } else {
+            textusername.setText("");
+        }
     }
 
     @SuppressWarnings("unchecked")

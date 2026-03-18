@@ -565,38 +565,40 @@ public class Main_Page extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     
-    
     private void table_update() {
-        int columnCount;
         try {
             Connection conn = DBConnection.getConnection();
+            // Start with a base query that allows adding multiple 'AND' conditions
+            StringBuilder sql = new StringBuilder("SELECT * FROM students WHERE 1=1");
 
-            // Start with a base query
-            StringBuilder sql = new StringBuilder("SELECT * FROM students");
-
-            // 1. Implementing Pass/Fail Filters
-            if (jCheckBox1.isSelected() && !jCheckBox2.isSelected()) {
-                sql.append(" WHERE marks >= 50"); // Pass 
-            } else if (jCheckBox2.isSelected() && !jCheckBox1.isSelected()) {
-                sql.append(" WHERE marks < 50"); // Fail 
+            // 1. Name Search Logic (Case-insensitive requirement)
+            String searchData = jsearchfield.getText().trim();
+            if (!searchData.isEmpty()) {
+                // Using % targets any name containing the search string 
+                sql.append(" AND name LIKE '%").append(searchData).append("%'");
             }
 
-            // 2. Sorting based on Names (String Manipulation)
-            // jRadioButton3 is Ascending, jRadioButton2 is Descending 
+            // 2. Pass/Fail Filtering [cite: 18]
+            if (jCheckBox1.isSelected()) {
+                sql.append(" AND marks >= 50"); // Pass
+            } else if (jCheckBox2.isSelected()) {
+                sql.append(" AND marks < 50"); // Fail
+            }
+
+            // 3. Alphabetical Sorting by Name [cite: 18]
             if (jRadioButton3.isSelected()) {
-                sql.append(" ORDER BY name ASC"); 
+                sql.append(" ORDER BY name ASC");
             } else if (jRadioButton2.isSelected()) {
                 sql.append(" ORDER BY name DESC");
             }
 
             PreparedStatement pst = conn.prepareStatement(sql.toString());
             ResultSet rs = pst.executeQuery();
+            ResultSetMetaData rd = rs.getMetaData();
+            int columnCount = rd.getColumnCount();
 
-            // Refresh Table Model [cite: 18, 20]
             DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
             df.setRowCount(0);
-            ResultSetMetaData rd = rs.getMetaData();
-            columnCount = rd.getColumnCount();
 
             while (rs.next()) {
                 Vector v2 = new Vector();
@@ -613,7 +615,7 @@ public class Main_Page extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
