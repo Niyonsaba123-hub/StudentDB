@@ -574,26 +574,25 @@ public class Main_Page extends javax.swing.JFrame {
             // Start with a base query
             StringBuilder sql = new StringBuilder("SELECT * FROM students");
 
-            // 1. Implementing the "Fail" Filter (jCheckBox2)
-            // According to Lab rules, you need to filter records 
-            if (jCheckBox2.isSelected()) {
-                sql.append(" WHERE marks < 50"); 
-            } else if (jCheckBox1.isSelected()) {
-                sql.append(" WHERE marks >= 50");
+            // 1. Implementing Pass/Fail Filters
+            if (jCheckBox1.isSelected() && !jCheckBox2.isSelected()) {
+                sql.append(" WHERE marks >= 50"); // Pass 
+            } else if (jCheckBox2.isSelected() && !jCheckBox1.isSelected()) {
+                sql.append(" WHERE marks < 50"); // Fail 
             }
 
-            // 2. Implementing "Ascending" (jRadioButton3) vs "Descending" (jRadioButton2)
-            // Lab 1 requires sorting via RadioButtons 
+            // 2. Sorting based on Names (String Manipulation)
+            // jRadioButton3 is Ascending, jRadioButton2 is Descending 
             if (jRadioButton3.isSelected()) {
-                sql.append(" ORDER BY marks ASC");
+                sql.append(" ORDER BY name ASC"); 
             } else if (jRadioButton2.isSelected()) {
-                sql.append(" ORDER BY marks DESC");
+                sql.append(" ORDER BY name DESC");
             }
 
             PreparedStatement pst = conn.prepareStatement(sql.toString());
             ResultSet rs = pst.executeQuery();
 
-            // ... (rest of your existing code to fill the table)
+            // Refresh Table Model [cite: 18, 20]
             DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
             df.setRowCount(0);
             ResultSetMetaData rd = rs.getMetaData();
