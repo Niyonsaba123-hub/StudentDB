@@ -216,6 +216,7 @@ public class Main_Page extends javax.swing.JFrame {
         jCheckBox1.addActionListener(this::jCheckBox1ActionPerformed);
 
         jCheckBox2.setText("Fail");
+        jCheckBox2.addActionListener(this::jCheckBox2ActionPerformed);
 
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
@@ -536,7 +537,7 @@ public class Main_Page extends javax.swing.JFrame {
     }//GEN-LAST:event_jsearchfieldActionPerformed
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        // TODO add your handling code here:
+        table_update();        // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
@@ -555,6 +556,10 @@ public class Main_Page extends javax.swing.JFrame {
         jsearchfield.setText("");      // Clear Search
         table_update();        // TODO add your handling code here:
     }//GEN-LAST:event_button5ActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        table_update();        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     /**
      * @param args the command line arguments
