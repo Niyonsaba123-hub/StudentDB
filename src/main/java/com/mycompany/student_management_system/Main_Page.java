@@ -378,48 +378,49 @@ public class Main_Page extends javax.swing.JFrame {
     }//GEN-LAST:event_combocourseActionPerformed
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
-    // 1. Get data from UI components
-       String name = txtname.getText().trim();
-       String email = txtemail1.getText().trim(); // Field next to "Email" label
-       String course = combocourse.getSelectedItem().toString();
-       String marksStr = txtemail.getText().trim(); // Field next to "Marks" label
+        // 1. Get data from UI components
+        String rawName = txtname.getText().trim();
+        String email = txtemail1.getText().trim();
+        String course = combocourse.getSelectedItem().toString();
+        String marksStr = txtemail.getText().trim();
 
-       // 2. Simple validation
-       if (name.isEmpty() || email.isEmpty() || marksStr.isEmpty()) {
-           JOptionPane.showMessageDialog(this, "Please fill in all fields!");
-           return;
-       }
+        // 2. Simple validation [cite: 22]
+        if (rawName.isEmpty() || email.isEmpty() || marksStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields!");
+            return;
+        }
 
-       try {
-           // 3. Connect to Database
-           java.sql.Connection conn = DBConnection.getConnection();
+        // 3. Custom String Manipulation: Title Case [cite: 23, 47]
+        String formattedName = "";
+        if (rawName.length() > 0) {
+            formattedName = rawName.substring(0, 1).toUpperCase() + rawName.substring(1).toLowerCase();
+        }
 
-           // 4. Prepare SQL Statement
-           // Note: 'password' is required by your schema, so we provide a default
-           String sql = "INSERT INTO students (name, email, course, marks) VALUES (?, ?, ?, ?)";
-           java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+        try {
+            // 4. Connect to Database [cite: 21, 51]
+            java.sql.Connection conn = DBConnection.getConnection();
 
-           pst.setString(1, name);
-           pst.setString(2, email);
-           pst.setString(3, course);
-           pst.setString(4, marksStr);
+            // 5. Prepare SQL Statement using PreparedStatement [cite: 47]
+            String sql = "INSERT INTO students (name, email, course, marks) VALUES (?, ?, ?, ?)";
+            java.sql.PreparedStatement pst = conn.prepareStatement(sql); // This defines 'pst'
 
-           // 5. Execute
-           pst.executeUpdate();
+            // 6. Set variables - Using our Title Case name here
+            pst.setString(1, formattedName); 
+            pst.setString(2, email);
+            pst.setString(3, course);
+            pst.setString(4, marksStr);
 
-           // 6. Success Feedback
-           JOptionPane.showMessageDialog(this, "Student Added Successfully!");
+            // 7. Execute [cite: 51]
+            pst.executeUpdate();
 
-           // 7. Refresh the UI
-           table_update(); // This method reloads the table list
-           clearFields();  // Helper method to reset the form
+            JOptionPane.showMessageDialog(this, "Student Added Successfully!");
+            table_update(); 
+            clearFields();
 
-       } catch (java.sql.SQLIntegrityConstraintViolationException e) {
-           JOptionPane.showMessageDialog(this, "This email is already registered!");
-       } catch (Exception e) {
-           JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-           e.printStackTrace();
-       }       // TODO add your handling code here:
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }     // TODO add your handling code here:
     }//GEN-LAST:event_btnaddActionPerformed
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
