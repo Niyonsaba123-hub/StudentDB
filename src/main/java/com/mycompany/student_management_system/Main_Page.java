@@ -566,35 +566,33 @@ public class Main_Page extends javax.swing.JFrame {
         try {
             Connection conn = DBConnection.getConnection();
 
-            // Base Query
-            StringBuilder query = new StringBuilder("SELECT * FROM students");
-            boolean hasFilter = false;
+            // Start with a base query
+            StringBuilder sql = new StringBuilder("SELECT * FROM students");
 
-            // 1. Handle Filtering (Pass/Fail)
-            // Checkboxes: Pass (jCheckBox1), Fail (jCheckBox2)
-            if (jCheckBox1.isSelected()) {
-                query.append(" WHERE marks >= 50");
-                hasFilter = true;
-            } else if (jCheckBox2.isSelected()) {
-                query.append(" WHERE marks < 50");
-                hasFilter = true;
+            // 1. Implementing the "Fail" Filter (jCheckBox2)
+            // According to Lab rules, you need to filter records 
+            if (jCheckBox2.isSelected()) {
+                sql.append(" WHERE marks < 50"); 
+            } else if (jCheckBox1.isSelected()) {
+                sql.append(" WHERE marks >= 50");
             }
 
-            // 2. Handle Sorting (Ascending/Descending)
-            // Radio Buttons: Ascending (jRadioButton3), Descending (jRadioButton2)
+            // 2. Implementing "Ascending" (jRadioButton3) vs "Descending" (jRadioButton2)
+            // Lab 1 requires sorting via RadioButtons 
             if (jRadioButton3.isSelected()) {
-                query.append(" ORDER BY marks ASC");
+                sql.append(" ORDER BY marks ASC");
             } else if (jRadioButton2.isSelected()) {
-                query.append(" ORDER BY marks DESC");
+                sql.append(" ORDER BY marks DESC");
             }
 
-            PreparedStatement pst = conn.prepareStatement(query.toString());
+            PreparedStatement pst = conn.prepareStatement(sql.toString());
             ResultSet rs = pst.executeQuery();
-            ResultSetMetaData rd = rs.getMetaData();
-            columnCount = rd.getColumnCount();
 
+            // ... (rest of your existing code to fill the table)
             DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
             df.setRowCount(0);
+            ResultSetMetaData rd = rs.getMetaData();
+            columnCount = rd.getColumnCount();
 
             while (rs.next()) {
                 Vector v2 = new Vector();
@@ -608,7 +606,6 @@ public class Main_Page extends javax.swing.JFrame {
                 df.addRow(v2);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
