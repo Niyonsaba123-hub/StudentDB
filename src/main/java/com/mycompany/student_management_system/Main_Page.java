@@ -18,10 +18,123 @@ public class Main_Page extends javax.swing.JFrame {
     /**
      * Creates new form Main_Page
      */
-    public Main_Page() {
-        initComponents();
+   public Main_Page() {
+    initComponents();
+    table_update();
+
+    // ================= MENU ITEMS =================
+    javax.swing.JMenuItem exitItem = new javax.swing.JMenuItem("Exit");
+    javax.swing.JMenuItem addStudentItem = new javax.swing.JMenuItem("Add Student");
+    javax.swing.JMenuItem viewAllItem = new javax.swing.JMenuItem("View All");
+    javax.swing.JMenuItem searchItem = new javax.swing.JMenuItem("Search Student");
+    javax.swing.JMenuItem deleteItem = new javax.swing.JMenuItem("Delete Selected");
+    javax.swing.JMenuItem aboutItem = new javax.swing.JMenuItem("About");
+
+    // ================= ADD TO MENUS =================
+    jMenu2.add(exitItem);      // File
+    jMenu3.add(addStudentItem);
+    jMenu3.add(viewAllItem);
+    jMenu3.add(searchItem);
+    jMenu3.add(deleteItem);
+    jMenu4.add(aboutItem);     // Help
+
+    // ================= ACTIONS =================
+
+    // 🔴 EXIT
+    exitItem.addActionListener(e -> {
+        int confirm = JOptionPane.showConfirmDialog(this, "Exit?", "Confirm",
+                JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    });
+
+    // 🟢 ADD STUDENT (CLEAR FORM)
+    addStudentItem.addActionListener(e -> {
+        clearFields();
+        txtname.requestFocus();
+    });
+
+    // 🔵 VIEW ALL
+    viewAllItem.addActionListener(e -> {
         table_update();
-    }
+    });
+
+    // 🟡 SEARCH
+    searchItem.addActionListener(e -> {
+        String search = JOptionPane.showInputDialog(this, "Enter name or email:");
+
+        if (search != null && !search.trim().isEmpty()) {
+            try {
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pst = conn.prepareStatement(
+                        "SELECT * FROM students WHERE name LIKE ? OR email LIKE ?"
+                );
+                pst.setString(1, "%" + search + "%");
+                pst.setString(2, "%" + search + "%");
+
+                ResultSet rs = pst.executeQuery();
+                DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
+                df.setRowCount(0);
+
+                while (rs.next()) {
+                    Vector v = new Vector();
+                    v.add(rs.getString("id"));
+                    v.add(rs.getString("name"));
+                    v.add(rs.getString("email"));
+                    v.add(rs.getString("course"));
+                    v.add(rs.getString("marks"));
+                    df.addRow(v);
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    });
+
+    // 🔴 DELETE SELECTED
+    deleteItem.addActionListener(e -> {
+        DefaultTableModel df = (DefaultTableModel) jTable3.getModel();
+        int selectedIndex = jTable3.getSelectedRow();
+
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Select a record first!");
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(df.getValueAt(selectedIndex, 0).toString());
+
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Delete selected student?", "Warning",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                Connection conn = DBConnection.getConnection();
+                PreparedStatement pst = conn.prepareStatement(
+                        "DELETE FROM students WHERE id=?"
+                );
+                pst.setInt(1, id);
+                pst.executeUpdate();
+
+                table_update();
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    });
+
+    // 🟣 ABOUT
+    aboutItem.addActionListener(e -> {
+        JOptionPane.showMessageDialog(this,
+                "Student Management System\nVersion 1.0\nJava Swing + MySQL",
+                "About",
+                JOptionPane.INFORMATION_MESSAGE);
+    });
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -193,7 +306,7 @@ public class Main_Page extends javax.swing.JFrame {
 
         label3.setBackground(new java.awt.Color(200, 242, 242));
         label3.setForeground(new java.awt.Color(0, 200, 0));
-        label3.setName("                   Welcome To Student Mangament System                   Record Added Successfully"); // NOI18N
+        label3.setName("                   Welcome To Student Mangament System                                                                          Record Added Successfully"); // NOI18N
         label3.setText("                   Welcome To Student Mangament System                   Record Added Successfully");
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
